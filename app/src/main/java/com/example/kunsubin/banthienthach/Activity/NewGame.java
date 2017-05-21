@@ -1,6 +1,7 @@
 package com.example.kunsubin.banthienthach.Activity;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -8,9 +9,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.example.kunsubin.banthienthach.CSDL.BussinessGame;
+import com.example.kunsubin.banthienthach.CSDL.StaticObject;
+import com.example.kunsubin.banthienthach.Main;
 import com.example.kunsubin.banthienthach.R;
 
 public class NewGame extends AppCompatActivity {
@@ -49,7 +51,10 @@ public class NewGame extends AppCompatActivity {
                     bussinessGame=new BussinessGame(getApplicationContext());
                     boolean f=bussinessGame.insertUser(addUser.getText().toString().trim());
                     if(f){
-                        Toast.makeText(getApplicationContext(),"Thành công",Toast.LENGTH_LONG).show();
+                        StaticObject.setUser(addUser.getText().toString().trim());
+                        Intent intent=new Intent(NewGame.this,Main.class);
+                        startActivity(intent);
+                        //Toast.makeText(getApplicationContext(),"Thành công",Toast.LENGTH_LONG).show();
                     }else {
                         AlertDialog.Builder builder = new AlertDialog.Builder(NewGame.this);
                         builder.setMessage("Không tạo được. Hãy thử với tên khác!");

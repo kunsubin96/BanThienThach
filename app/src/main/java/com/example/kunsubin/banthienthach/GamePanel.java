@@ -11,7 +11,11 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import com.example.kunsubin.banthienthach.CSDL.BussinessGame;
+import com.example.kunsubin.banthienthach.CSDL.StaticObject;
+
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -46,6 +50,9 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
     private int mang=1;
     private int countTemp=0;
     private boolean mangbool=false;
+    //vẽ
+    private List<Explosion> explosionList;
+    private long explosionStartTime;
     public GamePanel(Context context) {
         super(context);
         //add event the call back
@@ -64,13 +71,15 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
         dans=new ArrayList<Dan>();
         danStartTime=System.nanoTime();
 
+        explosionList=new ArrayList<Explosion>();
+        explosionStartTime= System.nanoTime();
 
 
         mainThread=new MainThread(getHolder(),this);
         mainThread.setRunning(true);
         mainThread.start();
         //set ban đầu chưa chạy
-        mayBay.setPlaying(false);
+        mayBay.setPlaying(true);
         newGameCreated=true;
         reset=false;
 
@@ -204,21 +213,14 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
                 //nếu xảy ra va chạm giữa thiên thạch với máy bay thì dừng game
                 if(collision(thienThachs.get(i),mayBay)){
                     thienThachs.remove(i);
+                    //giảm mạng khi phi thuyền va chạm với thiên thạch
                     mang--;
                     if(mang>0){
-                       /* explosion=new Explosion(BitmapFactory.decodeResource(getResources(),R.drawable.explosion),mayBay.getX(),mayBay.getY()-30,
-                                100,100,25);
-                        explosion.update();*/
                         mangbool=true;
-                        /*mayBay.setPlaying(false);
-                        startReset=System.nanoTime();
-                        long resetElapsed=(System.nanoTime()-startReset)/1000000;
-                        if(resetElapsed>100){
-                            againGame();
-                            mayBay.setPlaying(true);
-                            startReset= System.nanoTime();
-                        }*/
-
+                      /*  explosion=new Explosion(BitmapFactory.decodeResource(getResources(),R.drawable.explosion),mayBay.getX(),mayBay.getY()-30,
+                                100,100,25);
+                        explosion.update();
+*/
                     }else{
                         mangbool=false;
                         mayBay.setPlaying(false);
@@ -250,6 +252,14 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
                 //nếu xảy ra va chạm giữa đạn với thiên thạch thì dừng bỏ
                 for (int j=0;j<thienThachs.size();j++){
                     if(collision(dans.get(i),thienThachs.get(j))){
+                        //tạo nổ kki đạn chạm thiên thạch
+                        long expElapsed=(System.nanoTime()-explosionStartTime)/1000000;
+                        if(expElapsed>100){
+                            explosionList.add(new Explosion(BitmapFactory.decodeResource(getResources(),R.drawable.explosion),dans.get(i).getX(),dans.get(i).getY(),
+                                    100,100,25));
+                            explosionStartTime=System.nanoTime();
+                        }
+
                         gold++;
                         mayBay.setUpScore();
                         //loại bỏ dạn với thiên thạch bị bắn hạ
@@ -262,6 +272,10 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
                     dans.remove(i);
                     break;
                 }
+            }
+            //update trạng thái vụ nổ
+            for (int i=0;i<explosionList.size();i++){
+                explosionList.get(i).update();
             }
             //200 điểm cho lên 1 mạng
             if(mayBay.getScore()>0&&mayBay.getScore()%200==0&&countTemp==0){
@@ -283,6 +297,10 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
             explosion.update();
             long resetElapsed=(System.nanoTime()-startReset)/1000000;
             if(resetElapsed>2500&&!newGameCreated){
+                //cập nhật data
+                BussinessGame bussinessGame=new BussinessGame(getContext());
+                boolean f=bussinessGame.updateDiem(StaticObject.getUser(),best,gold);
+                //new game
                 newGame();
             }
         }
@@ -301,6 +319,18 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
             backgroud.draw(canvas);
             //vẽ text thông tin
             drawText(canvas);
+            //va chạm đạn với thiên thạch
+            for (Explosion e:explosionList){
+                e.draw(canvas);
+                //kiểm tra coi vụ nổ tại vị trí đã xong rùi thì remove di
+                if(e.isPlayedOnce()){
+                    explosionList.remove(e);
+                }
+            }
+            //
+          /*  if(mangbool){
+                explosion.draw(canvas);
+            }*/
             //
             if(!disspapear){
                 mayBay.draw(canvas);
@@ -343,6 +373,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
         mayBay.resetLevel();
         gold=100;
         mang=1;
+        explosionList.clear();
     }
     public void drawText(Canvas canvas){
         Paint paint=new Paint();

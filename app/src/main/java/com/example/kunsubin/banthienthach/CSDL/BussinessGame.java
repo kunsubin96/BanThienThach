@@ -7,6 +7,7 @@ import android.database.Cursor;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
  * Created by kunsubin on 5/21/2017.
  */
@@ -61,6 +62,18 @@ public class BussinessGame  extends DataAccess{
         long value=this.database.insert("thanhtich",null,newValues);
         this.close();
         if(value!=-1){
+            return true;
+        }
+        return false;
+    }
+    public boolean updateDiem(String user,int score,int gold){
+        this.open();
+        ContentValues newValues = new ContentValues();
+        newValues.put("diem", score);
+        newValues.put("gold", gold);
+        long values=this.database.update("thanhtich", newValues, "user='"+user+"'", null);
+        this.close();
+        if(values!=-1){
             return true;
         }
         return false;

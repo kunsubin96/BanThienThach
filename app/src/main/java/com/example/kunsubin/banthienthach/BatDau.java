@@ -18,9 +18,9 @@ public class BatDau extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wellcom);
         init();
-        /*BussinessGame bussinessGame=new BussinessGame(this);
-        List<ThanhTich> thanhTiches=bussinessGame.getThanhTich();
-        Toast.makeText(this,String.valueOf(thanhTiches.size()),Toast.LENGTH_LONG).show();*/
+       /* BussinessGame bussinessGame=new BussinessGame(this);
+        boolean f=bussinessGame.updateDiem("anhky",897,97);
+        Toast.makeText(this,String.valueOf(f),Toast.LENGTH_LONG).show();*/
 
         //nhấn new game
         start.setOnClickListener(new View.OnClickListener() {
