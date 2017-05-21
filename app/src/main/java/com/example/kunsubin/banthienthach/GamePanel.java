@@ -72,7 +72,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
         //set ban đầu chưa chạy
         mayBay.setPlaying(false);
         newGameCreated=true;
-        reset=true;
+        reset=false;
 
     }
 
@@ -299,6 +299,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
             canvas.scale(scaleFactorX, scaleFactorY);
 
             backgroud.draw(canvas);
+            //vẽ text thông tin
+            drawText(canvas);
             //
             if(!disspapear){
                 mayBay.draw(canvas);
@@ -317,9 +319,10 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback{
             if(started){
                 explosion.draw(canvas);
             }
-            drawText(canvas);
+
             canvas.restoreToCount(scaleState);
         }
+
     }
     //check va chạm thien thạch với máy bay
     public boolean collision(GameObject a, GameObject b){
