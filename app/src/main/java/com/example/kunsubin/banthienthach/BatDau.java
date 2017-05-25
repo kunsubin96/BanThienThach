@@ -21,7 +21,6 @@ public class BatDau extends Activity {
        /* BussinessGame bussinessGame=new BussinessGame(this);
         boolean f=bussinessGame.updateDiem("anhky",897,97);
         Toast.makeText(this,String.valueOf(f),Toast.LENGTH_LONG).show();*/
-
         //nhấn new game
         start.setOnClickListener(new View.OnClickListener() {
             @Override
