@@ -12,19 +12,21 @@ public class Backgroud {
     private int x, y;
     public Backgroud(Bitmap bitmap){
         this.bitmap=bitmap;
+        x=0;
+        y=0;
        // dy=GamePanel.MOVESPEED;
 
     }
-   /* public void update(){
+  /*  public void update(){
 
-        y+=dy;
-        if(y<-GamePanel.HEIGHT)
-            y=0;
+        y+=4;
+        if(y>0)
+            y=-GamePanel.HEIGHT;
     }*/
     public void draw(Canvas canvas){
+       /* canvas.drawBitmap(bitmap,x,y,null);
+        if(y>-GamePanel.HEIGHT){*/
         canvas.drawBitmap(bitmap,x,y,null);
-       /* if(y<0){
-            canvas.drawBitmap(bitmap,x,y+GamePanel.HEIGHT,null);
-        }*/
+        //}
     }
 }

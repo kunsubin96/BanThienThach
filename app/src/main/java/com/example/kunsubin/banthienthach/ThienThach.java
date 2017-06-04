@@ -23,7 +23,7 @@ public class ThienThach extends GameObject {
         score=s;
         //random ngẫu nhiên tốc độ của thiên thạch bay
         //speed=10+(int)(random.nextDouble()*score/30);
-        speed=10+random.nextInt(10)+score/30;
+        speed=10+random.nextInt(10)+score/300;
         if(speed>40) speed=40;
         spritesheet=res;
         Bitmap[] bitmaps=new Bitmap[numFrames];

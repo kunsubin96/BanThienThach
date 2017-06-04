@@ -2,6 +2,7 @@ package com.example.kunsubin.banthienthach;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Rect;
 
 /**
  * Created by kunsubin on 5/20/2017.
@@ -67,7 +68,15 @@ public class MayBay extends GameObject {
         if(level==5)
             level=5;
         else{
-            switch (score){
+            if(score>=30&&score<400)
+                level=2;
+            if(score>=400&&score<450)
+                level=3;
+            if(score>=450&&score<500)
+                level=4;
+            if(score>=500)
+                level=5;
+           /* switch (score){
                 case 100:
                     level=2;
                     break;
@@ -82,11 +91,18 @@ public class MayBay extends GameObject {
                     break;
                 default:
                     break;
-            }
+            }*/
         }
     }
     public void resetLevel(){
         level=1;
     }
+    public void setScore(int score1){
+        score=score1;
+    }
 
+    @Override
+    public Rect getRectangle() {
+        return new Rect(x,y,x+width,y+height-100);
+    }
 }

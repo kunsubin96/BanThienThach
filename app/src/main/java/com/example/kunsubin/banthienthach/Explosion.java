@@ -28,7 +28,7 @@ public class Explosion {
             bitmaps[i]=Bitmap.createBitmap(spritesheet,(i-5*row)*width,row*height,width,height);
         }
         animation.setFrames(bitmaps);
-        animation.setDelay(15);
+        animation.setDelay(8);
     }
     public void update(){
         if(!animation.isPlayedOnce()){
